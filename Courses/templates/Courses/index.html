@@ -1,0 +1,32 @@
+
+{% extends 'Courses/main.html' %}
+
+{% block content %}
+    
+      <div class="row">
+            {% for course in courses %}
+            <a href="{% url 'Courses:detail' course.id %}" >
+              <p class="alert alert-info text-center"> {{course.name}} </p></a>
+            {% endfor %}
+        </div>
+        <div class="row ">
+             <form class="form-inline" action="{% url 'Courses:add' %}" method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                  <label for="inputName">Course name</label>
+                  <input required type="text" name= "name" class="form-control" id="inputName"
+                   placeholder="name">
+                </div>
+
+                <div class="form-group">
+                  <label for="Inputchapters">Number Of chapters</label>
+                  <input type="number" name="numberOfchapters" min="1" value="1" class="form-control" id="Inputchapters">
+                </div>
+
+                <button type="submit" class="btn btn-success">Add Course</button>
+              
+              </form>
+        </div>
+    </div>  
+{% endblock %}

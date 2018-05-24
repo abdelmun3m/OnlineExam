@@ -1,0 +1,34 @@
+
+{% extends 'Courses/main.html' %}
+
+
+{% block content %}
+    
+        <div class="row">
+                <p class="alert alert-info text-center"> {{course.name}} </p>
+
+
+                <div class="panel panel-default">
+                        <div class="panel-heading">Chapters</div>
+                        <div class="panel-body text-center">
+                               {% for chapter in course.chapter_set.all %}
+                                        {%if chapter.question_set.all %}
+                                                        
+                                                <a href="{% url "Courses:chapter"  course.id chapter.id %}">{{ chapter.name }} 
+                                                        </a> 
+                                        {% else %}
+                                        <a style="color:red " href="{% url "Courses:chapter"  course.id chapter.id %}">{{ chapter.name }} 
+                                                </a> 
+                                        {%endif %}
+                                        <br>
+                               {% endfor %}
+                        </div>
+                </div>
+        </div>
+
+        <div class="row">
+                <a class ="btn btn-success" href="{% url "Courses:exam" course.id %}">Generate Exam</a>
+        </div>
+
+
+{% endblock %}

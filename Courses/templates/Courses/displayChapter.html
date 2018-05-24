@@ -1,0 +1,75 @@
+{% extends 'Courses/main.html' %} {% block content %}
+
+<div class="row">
+
+    <p class="alert alert-info text-center"> 
+        <a href="">{{course.name}}</a>/chapter{{chapter.id}} 
+    </p>
+
+        <form class="form-horizontal" 
+                action="" id="myform" method="POST">
+             {% for question in chapter.question_set.all %}
+        
+            <div class="panel panel-default">
+                <div class="panel-heading">{{question.get_objective_display}} {{question.get_difficulty_display}}</div>
+                <div class="panel-body">
+
+
+                        <div class="form-group">
+                                <label for="question{{forloop.counter}}" class="col-sm-2 control-label">Question</label>
+                                <div class="col-sm-10">
+                                    <input type="text" required 
+                                    class="form-control" 
+                                    id="question{{forloop.counter}}" 
+                                    placeholder="question{{forloop.counter}}" 
+                                    name="question{{forloop.counter}}" 
+                                    value="{{question.question}}"
+                                    disabled
+                                    >
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                
+                                    <label for="q{{forloop.counter}}a1" class="col-sm-2 control-label">A)</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" required class="form-control" 
+                                        id="q{{forloop.counter}}a1" placeholder="Answer" 
+                                        name="q{{forloop.counter}}a1"
+                                        value="{{question.choice1}}"
+                                        disabled
+                                        >
+                                    </div>
+                    
+                    
+                                    <label for="a2" class="col-sm-2 control-label">B)</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" required class="form-control" 
+                                        id="q{{forloop.counter}}a2" placeholder="Answer" 
+                                        name="q{{forloop.counter}}a2"
+                                        value="{{question.choice1}}"
+                                        disabled
+                                        >
+                                    </div>
+                    
+                    
+                                    <label for="a3" class="col-sm-2 control-label">C)</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" required class="form-control" 
+                                        id="q{{forloop.counter}}a3" placeholder="Answer" 
+                                        name="q{{forloop.counter}}a3"
+                                        value="{{question.choice1}}"
+                                        disabled>
+                                    </div>
+                    
+                                </div>
+
+                                <p>
+                                    Correct Answer {{ question.answer}}
+                                </p>
+                </div>
+            </div>
+            {% endfor %}
+        </form>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'Courses/main.html' %} {% block content %}
+    
+
+<p class="alert alert-info text-center">
+    <a href="{% url "Courses:detail" course.id %}">{{course.name}}</a> Exam
+</p>
+
+
+
+{%if message %}
+    <p class="alert alert-danger text-center">
+        {{message}}
+    </p>
+{%else%}
+    <p class="alert alert-warning text-center">
+            Be sure that total number of questions for each level equals number of questions per chapter * number of chapters
+    </p>
+{% endif %}
+
+<form class="form-horizontal" action="{% url 'Courses:generation' course.id %}" id="myform" method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="questions" class="col-sm-2 control-label">Number of Questions per Chapter</label>
+        <div class="col-sm-10">
+            <input type="number" required class="form-control" 
+            id="questions" name="numberOfquestionPerChapter" 
+            {%if message%}
+                value={{numberOfquestionPerChapter}}
+            {% else %}
+                value = "5"
+            {% endif %}
+            min="1" max="12">
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <label for="Reminding" class="col-sm-2 control-label">Reminding</label>
+        <div class="col-sm-10">
+            <input type="number" required class="form-control" 
+            id="Reminding" name="Reminding" 
+            {%if message%}
+                value={{Reminding}}
+            {% else %}
+                value = "5"
+            {% endif %}
+            min="1" max="12">
+        </div>
+    </div>
+    
+
+    <div class="form-group">
+        <label for="Understanding" class="col-sm-2 control-label">Understanding</label>
+        <div class="col-sm-10">
+            <input type="number" required class="form-control" 
+            id="Understanding" name="Understanding" 
+            {%if message%}
+                value={{Understanding}}
+            {% else %}
+                value = "5"
+            {% endif %}
+            min="1" max="12">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Creativity" class="col-sm-2 control-label">Creativity</label>
+        <div class="col-sm-10">
+            <input type="number" required class="form-control" 
+            id="Creativity" name="Creativity" 
+            {%if message%}
+                value={{Creativity}}
+            {% else %}
+                value = "5"
+            {% endif %}
+            min="1" max="12">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Difficult" class="col-sm-2 control-label">Difficult</label>
+        <div class="col-sm-10">
+            <input type="number" required class="form-control" 
+            id="Difficult" name="Difficult" 
+            {%if message%}
+                value={{Difficult}}
+            {% else %}
+                value = "5"
+            {% endif %}
+            min="1" max="12">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Simple" class="col-sm-2 control-label">Simple</label>
+        <div class="col-sm-10">
+            <input type="number" required class="form-control" 
+            id="Simple" name="Simple" 
+            {%if message%}
+                value={{Simple}}
+            {% else %}
+                value = "5"
+            {% endif %}
+            min="1" max="12">
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-success"> Submit </button>
+    </div>
+</form>
+
+{% endblock %}
