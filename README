@@ -3,9 +3,9 @@ The system must do the following functionalities:
 
 
 
-*Specify the course
-*Specify the questions and assign them to every chapter
-*Allow the teacher to design an exam which is specified by the number of questions per chapter and total number of questions for every difficulty level and every objective, the system should recommend the optimum exam to realize these requirements of the teacher.
+* Specify the course
+* Specify the questions and assign them to every chapter
+* Allow the teacher to design an exam which is specified by the number of questions per chapter and total number of questions for every difficulty level and every objective, the system should recommend the optimum exam to realize these requirements of the teacher.
 
 The task is implemented using Python and Django Framework.
 
