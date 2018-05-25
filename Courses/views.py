@@ -135,7 +135,7 @@ def generation(request,course_id):
         course = get_object_or_404(Course,pk=course_id)
         poll = Question.objects.filter(chapter__in=course.chapter_set.all())
         
-        valid= validateExam(request.POST,len(course.chapter_set.all()) , len(poll))
+        valid = validateExam(request.POST,len(course.chapter_set.all()) , len(poll))
         
         print("valid",valid)
         
@@ -167,12 +167,11 @@ def generation(request,course_id):
 
         optimalExam = startGeneration(context)
         exam = Question.objects.filter(id__in=optimalExam[1])
-        accuracy =(optimalExam[0] / (6 * context["sampleSize"])) * 100
-        print(round(accuracy))
+        accuracy =(optimalExam[0] / (6 * context["numberOfChapters"])) * 100
         context = {
             "course":course,
             "questions":exam,
-            "accuracy" : accuracy
+            "accuracy" : round(accuracy,2)
         }
         return render(request,"Courses/displayExam.html",context)
     else:
@@ -184,5 +183,8 @@ def validateExam(request , chapters,totalquestionsperexam):
         return (0,"total number of question of each levels must equal " + str((int(request["numberOfquestionPerChapter"]) * int(chapters))))
     elif totalquestionsperexam < 12 * chapters:
         return(0,"no enugh questions for each chapter, chaeck that you have entered 12 question per each chapter")
+    elif chapters <= 0:
+        return(0,"Chapters must not be 0")
+    
     return (1,"")
 

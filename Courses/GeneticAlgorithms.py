@@ -41,11 +41,7 @@ def startGeneration(_context):
 
     generatePopulations()
     geneticAlgorithm()
-    
-    #print(len(population))
-    # for i in history:
-    #     print(i[0] , len(i[1]))
-    
+    print(maxGeneration())
     return maxGeneration()    
 
 
@@ -56,10 +52,11 @@ def generatePopulations():
     global decoding
     for i in range(numberOfSamlplesInPopulation): 
         random.shuffle(decoding)
-        sample = decoding[ 0 : sampleSize]
-        decoding = decoding[sampleSize:]
-        candidate = (FitnesFunction(sample)  ,sample)
-        population.append(candidate) 
+        if len(decoding) >= sampleSize:
+            sample = decoding[ 0 : sampleSize]
+            decoding = decoding[sampleSize:]
+            candidate = (FitnesFunction(sample)  ,sample)
+            population.append(candidate) 
     
 def geneticAlgorithm():
     global NumberOfGenerations
@@ -69,18 +66,11 @@ def geneticAlgorithm():
         for i in range(len(population)):
             x = getCandidate()
             y = getCandidate()
-            #if x and x[0] == optimalFitnes:
-            #    newPopulation.append(x)
-            #    x = getCandidate()
-            #if y and y[0] == optimalFitnes:
-            #    newPopulation.append(x)
-            #    y = getCandidate()
             child1,child2 = reproduce(x,y)
             if child1:
                 newPopulation.append(child1) if child1[0] >= optimalFitnes - 2 else newPopulation.append(mutate(child1))
             if child2:
                 newPopulation.append(child2) if child2[0] >= optimalFitnes - 2 else newPopulation.append(mutate(child2))
-        #global population 
         population = newPopulation
         NumberOfGenerations = NumberOfGenerations-1
 
@@ -93,6 +83,7 @@ def satisfaction(_population):
     satisfactionRation = 0
     for i in _population:
         satisfactionRation = satisfactionRation+i[0]
+
     #extraxt question from candidate and add  new generation to history
     listOfQuestion = extractQuestions(_population)
     generation = (satisfactionRation , listOfQuestion) 
@@ -118,12 +109,13 @@ def getCandidate():
 def reproduce(candidateX,candidateY):
     if candidateX and candidateY:
         newX,newY = candidateX,candidateY
-        index = random.randint(1, sampleSize - 1 )
-        newX = candidateX[1][0:index]
-        newX.extend(candidateY[1][index:])
-        newY = candidateY[1][0:index]
-        newY.extend(candidateX[1][index:])
-        return [( FitnesFunction(newX),newX), ( FitnesFunction(newY) , newY)]
+        if sampleSize > 0:
+            index = random.randint(0, sampleSize - 1)
+            newX = candidateX[1][0:index]
+            newX.extend(candidateY[1][index:])
+            newY = candidateY[1][0:index]
+            newY.extend(candidateX[1][index:])
+            return [( FitnesFunction(newX),newX), ( FitnesFunction(newY) , newY)]
     return candidateX , candidateY
 
 #mutate candidate to get more fitnes
@@ -135,11 +127,13 @@ def reproduce(candidateX,candidateY):
 def mutate(candidate):
     if len(decoding) > 0:
         global decoding
-        index = random.randint(0, sampleSize - 1 )
-        mutation = random.sample(decoding , 1)[0]
-        decoding.remove(mutation)
-        candidate[1][index] = mutation
-        return ( FitnesFunction(candidate[1]) ,candidate[1])
+        if sampleSize > 0:
+            index = random.randint(0, sampleSize - 1 )
+            if len(decoding) > 0:
+                mutation = random.sample(decoding , 1)[0]
+                decoding.remove(mutation)
+                candidate[1][index] = mutation
+                return ( FitnesFunction(candidate[1]) ,candidate[1])
     return candidate
 
 #get max generation from history
@@ -177,6 +171,11 @@ def FitnesFunction(sample):
 
 
 
+
+# number of questions per chapter in each sample, the optimal ratio is 
+# OR = number of questions per chapter / total exam questions 
+# total exam questions =  number of questions per chapter * number of chapters
+# OR = 1 / number of chapters
 def evaluateChaptersemetric(sample):
     optimalRation = 1 / context["numberOfChapters"]
     counter = {}
